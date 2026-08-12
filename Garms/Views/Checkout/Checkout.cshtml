@@ -1,0 +1,56 @@
+@{
+    ViewData["Title"] = "Checkout";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>@ViewData["Title"] | GARMS</title>
+  <link rel="stylesheet" href="~/css/shop.css">
+</head>
+<body>
+  <div class="announcement">NEW DROP ON FRIDAY — FIND YOUR NEXT PIECE</div>
+  <nav class="shop-nav" aria-label="Main navigation">
+    <a class="logo" href="/">GARMS</a>
+    <div class="nav-links">
+      <a href="/Wishlist/Wishlist">♡ <span id="wishlistCount">0</span></a>
+      <a href="/Cart/Cart">CART (<span id="cartCount">0</span>)</a>
+    </div>
+  </nav>
+  <main class="shop-page">
+    <p class="eyebrow">GARMS / CHECKOUT</p>
+    <h1>Make it yours.</h1>
+    <div class="checkout">
+      <form id="checkoutForm" class="checkout-card">
+        <h2>Delivery details</h2>
+        <label for="name">Full name</label>
+        <input id="name" name="name" autocomplete="name" required>
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" autocomplete="email" required>
+        <label for="address">Address</label>
+        <input id="address" name="address" autocomplete="street-address" required>
+        <div class="form-row">
+          <div>
+            <label for="city">City</label>
+            <input id="city" name="city" autocomplete="address-level2" required>
+          </div>
+          <div>
+            <label for="phone">Phone</label>
+            <input id="phone" name="phone" type="tel" autocomplete="tel" required>
+          </div>
+        </div>
+        <button class="button-green" type="submit" style="width: 100%; margin-top: 28px;">PLACE ORDER</button>
+      </form>
+      <aside class="checkout-card">
+        <p class="eyebrow">ORDER TOTAL</p>
+        <h2 id="checkoutTotal">EGP 0</h2>
+        <p>Your order is reserved once you place it. Payment is handled on delivery.</p>
+      </aside>
+    </div>
+  </main>
+  <script src="~/js/shop.js"></script>
+</body>
+</html>
