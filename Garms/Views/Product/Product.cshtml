@@ -1,0 +1,1253 @@
+﻿@using System.Text.Json
+@using System.Linq
+@model IEnumerable<Garms.Models.Products>
+
+@{
+    ViewData["Title"] = "Product";
+    Layout = null;
+
+    var productsForJavaScript = Model.Select(p => new
+    {
+        id = p.ProductID.ToString(),
+        name = p.ProductName,
+        category = p.Category,
+        price = p.Price,
+        image = !string.IsNullOrWhiteSpace(p.ImagePath)
+            ? "/" + p.ImagePath.TrimStart('/')
+            : (!string.IsNullOrWhiteSpace(p.Image)
+                ? "/" + p.Image.TrimStart('/')
+                : "/images/image.jpg")
+    }).ToList();
+
+    var productJson = JsonSerializer.Serialize(productsForJavaScript);
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>@ViewData["Title"] | GARMS</title>
+
+    <link rel="stylesheet"
+          href="~/css/shop.css"
+          asp-append-version="true" />
+
+    <style>
+
+        /* =========================================================
+           GARMS PRODUCT PAGE
+           ========================================================= */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f7f3eb;
+            color: #111;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        /* =========================================================
+           ANNOUNCEMENT
+           ========================================================= */
+
+        .announcement {
+            width: 100%;
+            height: 40px;
+            background: #111;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        /* =========================================================
+           NAVBAR
+           ========================================================= */
+
+        .shop-nav {
+            width: 100%;
+            height: 72px;
+            padding: 0 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #f7f3eb;
+            border-bottom: 1px solid #ddd8cf;
+        }
+
+        .shop-nav .logo {
+            color: #111;
+            text-decoration: none;
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: -1px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .nav-links a {
+            color: #111;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* =========================================================
+           PAGE
+           ========================================================= */
+
+        .product-page {
+            width: min(1200px, calc(100% - 60px));
+            margin: 0 auto;
+            padding: 55px 0 80px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 28px;
+            color: #555;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+        }
+
+        .back-link:hover {
+            color: #111;
+        }
+
+        /* =========================================================
+           PRODUCT LAYOUT
+           ========================================================= */
+
+        .product-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1.1fr) minmax(380px, 0.9fr);
+            gap: 55px;
+            align-items: start;
+        }
+
+        /* =========================================================
+           IMAGE
+           ========================================================= */
+
+        .product-image-container {
+            width: 100%;
+            height: 650px;
+            background: #fff;
+            border-radius: 14px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* =========================================================
+           PRODUCT INFO
+           ========================================================= */
+
+        .product-info {
+            padding: 10px 0;
+        }
+
+        .product-category {
+            margin: 0 0 18px;
+            color: #777;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .product-name {
+            margin: 0 0 18px;
+            font-size: clamp(42px, 5vw, 68px);
+            line-height: 0.95;
+            font-weight: 900;
+            letter-spacing: -3px;
+        }
+
+        .product-price {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        .product-divider {
+            width: 100%;
+            height: 1px;
+            background: #d8d2c8;
+            margin: 30px 0;
+        }
+
+        /* =========================================================
+           SIZE
+           ========================================================= */
+
+        .option-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .option-title {
+            margin: 0;
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .option-hint {
+            color: #777;
+            font-size: 13px;
+        }
+
+        .size-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .size-button {
+            min-width: 54px;
+            height: 46px;
+            padding: 0 15px;
+            border: 1px solid #c8c2b9;
+            background: #f7f3eb;
+            color: #111;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.15s ease;
+        }
+
+        .size-button:hover {
+            background: #111;
+            color: #fff;
+            border-color: #111;
+        }
+
+        .size-button.selected {
+            background: #111;
+            color: #fff;
+            border-color: #111;
+        }
+
+        /* =========================================================
+           QUANTITY
+           ========================================================= */
+
+        .quantity-section {
+            margin-top: 30px;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            width: fit-content;
+            border: 1px solid #c8c2b9;
+            background: #fff;
+        }
+
+        .quantity-button {
+            width: 45px;
+            height: 45px;
+            border: 0;
+            background: #fff;
+            color: #111;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .quantity-button:hover {
+            background: #111;
+            color: #fff;
+        }
+
+        .quantity-number {
+            width: 45px;
+            text-align: center;
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        /* =========================================================
+           ACTION BUTTONS
+           ========================================================= */
+
+        .product-actions {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .product-action-button {
+            width: 100%;
+            height: 52px;
+            border: 0;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 900;
+            letter-spacing: 0.3px;
+            transition: 0.15s ease;
+        }
+
+        .add-cart {
+            background: #b6ff00;
+            color: #111;
+        }
+
+        .add-cart:hover {
+            background: #9de000;
+        }
+
+        .add-wishlist {
+            background: #111;
+            color: #fff;
+        }
+
+        .add-wishlist:hover {
+            background: #333;
+        }
+
+        /* =========================================================
+           MESSAGE
+           ========================================================= */
+
+        .product-message {
+            margin-top: 15px;
+            min-height: 20px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .error-page {
+            padding: 80px 0;
+        }
+
+        .error-page h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+
+        .error-page p {
+            color: #666;
+        }
+
+        /* =========================================================
+           RESPONSIVE
+           ========================================================= */
+
+        @@media (max-width: 900px) {
+
+            .product-page {
+                width: min(100% - 30px, 700px);
+                padding-top: 35px;
+            }
+
+            .product-layout {
+                grid-template-columns: 1fr;
+                gap: 35px;
+            }
+
+            .product-image-container {
+                height: 550px;
+            }
+
+            .product-name {
+                font-size: 50px;
+            }
+        }
+
+        @@media (max-width: 600px) {
+
+            .shop-nav {
+                padding: 0 18px;
+            }
+
+            .shop-nav .logo {
+                font-size: 24px;
+            }
+
+            .nav-links {
+                gap: 12px;
+            }
+
+            .nav-links a {
+                font-size: 12px;
+            }
+
+            .product-page {
+                width: calc(100% - 24px);
+                padding: 30px 0 50px;
+            }
+
+            .product-image-container {
+                height: 430px;
+            }
+
+            .product-name {
+                font-size: 42px;
+                letter-spacing: -2px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <!-- =========================================================
+         ANNOUNCEMENT
+         ========================================================= -->
+
+    <div class="announcement">
+        NEW DROP ON FRIDAY - FIND YOUR NEXT PIECE
+    </div>
+
+
+    <!-- =========================================================
+         NAVIGATION
+         ========================================================= -->
+
+    <nav class="shop-nav">
+
+        <a class="logo" href="/">
+            GARMS
+        </a>
+
+        <div class="nav-links">
+
+            <a href="/Wishlist/Wishlist">
+                Wishlist (<span id="wishlistCount">0</span>)
+            </a>
+
+            <a href="/Cart/Cart">
+                CART (<span id="cartCount">0</span>)
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- =========================================================
+         PRODUCT PAGE
+         ========================================================= -->
+
+    <main class="product-page">
+
+        <a class="back-link"
+           href="/">
+            &larr; BACK TO SHOP
+        </a>
+
+        <div id="productDetail"></div>
+
+    </main>
+
+
+    <!-- =========================================================
+         DATABASE PRODUCT DATA
+         ========================================================= -->
+
+    <script id="garmsProductData"
+            type="application/json">@Html.Raw(productJson)</script>
+
+
+    <!-- =========================================================
+         PRODUCT PAGE JAVASCRIPT
+         ========================================================= -->
+
+    <script>
+
+        const CART_KEY = "garmsCart";
+        const WISHLIST_KEY = "garmsWishlist";
+
+        let products = [];
+
+        let selectedSize = null;
+        let quantity = 1;
+
+
+        /* =========================================================
+           LOAD DATABASE PRODUCTS
+           ========================================================= */
+
+        try {
+
+            const dataElement =
+                document.getElementById("garmsProductData");
+
+            if (dataElement) {
+
+                products =
+                    JSON.parse(dataElement.textContent || "[]");
+
+            }
+
+            if (!Array.isArray(products)) {
+
+                products = [];
+
+            }
+
+            console.log("GARMS products:", products);
+
+        }
+        catch (error) {
+
+            console.error(
+                "GARMS: Failed to read products.",
+                error
+            );
+
+            products = [];
+
+        }
+
+
+        /* =========================================================
+           URL PRODUCT ID
+           ========================================================= */
+
+        const urlParams =
+            new URLSearchParams(window.location.search);
+
+        const productId =
+            urlParams.get("id");
+
+
+        /* =========================================================
+           FIND PRODUCT
+           ========================================================= */
+
+        const product =
+            products.find(
+                item => String(item.id) === String(productId)
+            );
+
+
+        /* =========================================================
+           LOCAL STORAGE
+           ========================================================= */
+
+        function readStorage(key) {
+
+            try {
+
+                const data =
+                    JSON.parse(localStorage.getItem(key));
+
+                return Array.isArray(data)
+                    ? data
+                    : [];
+
+            }
+            catch {
+
+                return [];
+
+            }
+
+        }
+
+
+        function writeStorage(key, value) {
+
+            localStorage.setItem(
+                key,
+                JSON.stringify(value)
+            );
+
+        }
+
+
+        /* =========================================================
+           NAVIGATION COUNTERS
+           ========================================================= */
+
+        function updateNavigation() {
+
+            const cart =
+                readStorage(CART_KEY);
+
+            const wishlist =
+                readStorage(WISHLIST_KEY);
+
+
+            const cartCount =
+                cart.reduce(
+                    (total, item) =>
+                        total + Number(item.quantity || 0),
+                    0
+                );
+
+
+            const cartElement =
+                document.getElementById("cartCount");
+
+            const wishlistElement =
+                document.getElementById("wishlistCount");
+
+
+            if (cartElement) {
+
+                cartElement.textContent =
+                    cartCount;
+
+            }
+
+
+            if (wishlistElement) {
+
+                wishlistElement.textContent =
+                    wishlist.length;
+
+            }
+
+        }
+
+
+        /* =========================================================
+           SIZE OPTIONS
+           ========================================================= */
+
+        function getSizes(category) {
+
+            const value =
+                String(category || "").toLowerCase();
+
+
+            if (
+                value.includes("shoe") ||
+                value.includes("shoes")
+            ) {
+
+                return [
+                    "36",
+                    "37",
+                    "38",
+                    "39",
+                    "40",
+                    "41"
+                ];
+
+            }
+
+
+            if (
+                value.includes("bag") ||
+                value.includes("accessor")
+            ) {
+
+                return [
+                    "One Size"
+                ];
+
+            }
+
+
+            return [
+                "XS",
+                "S",
+                "M",
+                "L",
+                "XL"
+            ];
+
+        }
+
+
+        /* =========================================================
+           ESCAPE HTML
+           ========================================================= */
+
+        function escapeHtml(value) {
+
+            return String(value ?? "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+
+        }
+
+
+        /* =========================================================
+           FORMAT PRICE
+           ========================================================= */
+
+        function formatPrice(value) {
+
+            return Number(value || 0)
+                .toLocaleString("en-EG");
+
+        }
+
+
+        /* =========================================================
+           RENDER PRODUCT
+           ========================================================= */
+
+        function renderProduct() {
+
+            const container =
+                document.getElementById("productDetail");
+
+
+            if (!container) {
+
+                return;
+
+            }
+
+
+            if (!product) {
+
+                container.innerHTML = `
+
+                    <div class="error-page">
+
+                        <h1>
+                            Product not found
+                        </h1>
+
+                        <p>
+                            This item is no longer available.
+                            View all items →
+                        </p>
+
+                    </div>
+
+                `;
+
+                return;
+
+            }
+
+
+            const sizes =
+                getSizes(product.category);
+
+
+            selectedSize = null;
+            quantity = 1;
+
+
+            container.innerHTML = `
+
+                <div class="product-layout">
+
+                    <!-- PRODUCT IMAGE -->
+
+                    <div class="product-image-container">
+
+                        <img
+                            src="${escapeHtml(product.image)}"
+                            alt="${escapeHtml(product.name)}"
+                            onerror="this.onerror=null;this.src='/images/image.jpg';"
+                        >
+
+                    </div>
+
+
+                    <!-- PRODUCT INFORMATION -->
+
+                    <section class="product-info">
+
+                        <p class="product-category">
+
+                            GARMS / ${escapeHtml(product.category)}
+
+                        </p>
+
+
+                        <h1 class="product-name">
+
+                            ${escapeHtml(product.name)}
+
+                        </h1>
+
+
+                        <p class="product-price">
+
+                            EGP ${formatPrice(product.price)}
+
+                        </p>
+
+
+                        <div class="product-divider"></div>
+
+
+                        <!-- SIZE -->
+
+                        <div class="size-section">
+
+                            <div class="option-header">
+
+                                <p class="option-title">
+                                    Select size
+                                </p>
+
+                                <span
+                                    id="sizeHint"
+                                    class="option-hint">
+                                    Choose a size
+                                </span>
+
+                            </div>
+
+
+                            <div
+                                id="sizeButtons"
+                                class="size-buttons">
+                            </div>
+
+                        </div>
+
+
+                        <!-- QUANTITY -->
+
+                        <div class="quantity-section">
+
+                            <div class="option-header">
+
+                                <p class="option-title">
+                                    Quantity
+                                </p>
+
+                            </div>
+
+
+                            <div class="quantity-control">
+
+                                <button
+                                    id="minusButton"
+                                    class="quantity-button"
+                                    type="button">
+                                    −
+                                </button>
+
+
+                                <span
+                                    id="quantityNumber"
+                                    class="quantity-number">
+                                    1
+                                </span>
+
+
+                                <button
+                                    id="plusButton"
+                                    class="quantity-button"
+                                    type="button">
+                                    +
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ACTIONS -->
+
+                        <div class="product-actions">
+
+                            <button
+                                id="addCartButton"
+                                class="product-action-button add-cart"
+                                type="button">
+
+                                ADD TO CART
+
+                            </button>
+
+
+                            <button
+                                id="addWishlistButton"
+                                class="product-action-button add-wishlist"
+                                type="button">
+
+                                ADD TO WISHLIST
+
+                            </button>
+
+                        </div>
+
+
+                        <div
+                            id="productMessage"
+                            class="product-message">
+                        </div>
+
+                    </section>
+
+                </div>
+
+            `;
+
+
+            /* =====================================================
+               CREATE SIZE BUTTONS
+               ===================================================== */
+
+            const sizeContainer =
+                document.getElementById("sizeButtons");
+
+
+            sizes.forEach(size => {
+
+                const button =
+                    document.createElement("button");
+
+
+                button.type = "button";
+
+                button.className =
+                    "size-button";
+
+                button.textContent =
+                    size;
+
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        selectedSize = size;
+
+
+                        document
+                            .querySelectorAll(".size-button")
+                            .forEach(btn => {
+
+                                btn.classList.remove(
+                                    "selected"
+                                );
+
+                            });
+
+
+                        button.classList.add(
+                            "selected"
+                        );
+
+
+                        document.getElementById(
+                            "sizeHint"
+                        ).textContent =
+                            `Size: ${size}`;
+
+                    }
+                );
+
+
+                sizeContainer.appendChild(button);
+
+            });
+
+
+            /* =====================================================
+               QUANTITY BUTTONS
+               ===================================================== */
+
+            document
+                .getElementById("minusButton")
+                .addEventListener(
+                    "click",
+                    function () {
+
+                        if (quantity > 1) {
+
+                            quantity--;
+
+                        }
+
+
+                        document.getElementById(
+                            "quantityNumber"
+                        ).textContent =
+                            quantity;
+
+                    }
+                );
+
+
+            document
+                .getElementById("plusButton")
+                .addEventListener(
+                    "click",
+                    function () {
+
+                        quantity++;
+
+
+                        document.getElementById(
+                            "quantityNumber"
+                        ).textContent =
+                            quantity;
+
+                    }
+                );
+
+
+            /* =====================================================
+               ADD TO CART
+               ===================================================== */
+
+            document
+                .getElementById("addCartButton")
+                .addEventListener(
+                    "click",
+                    addToCart
+                );
+
+
+            /* =====================================================
+               ADD TO WISHLIST
+               ===================================================== */
+
+            document
+                .getElementById("addWishlistButton")
+                .addEventListener(
+                    "click",
+                    addToWishlist
+                );
+
+        }
+
+
+        /* =========================================================
+           ADD TO CART
+           ========================================================= */
+
+        function addToCart() {
+
+            if (!product) {
+
+                return;
+
+            }
+
+
+            if (!selectedSize) {
+
+                showMessage(
+                    "Please choose a size first."
+                );
+
+                return;
+
+            }
+
+
+            const cart =
+                readStorage(CART_KEY);
+
+
+            const cartId =
+                `${product.id}-${selectedSize}`;
+
+
+            const existing =
+                cart.find(
+                    item =>
+                        String(item.id) ===
+                        String(cartId)
+                );
+
+
+            if (existing) {
+
+                existing.quantity += quantity;
+
+            }
+            else {
+
+                cart.push({
+
+                    id: cartId,
+
+                    productId: product.id,
+
+                    name: product.name,
+
+                    category: product.category,
+
+                    price: Number(product.price),
+
+                    image: product.image,
+
+                    size: selectedSize,
+
+                    quantity: quantity
+
+                });
+
+            }
+
+
+            writeStorage(
+                CART_KEY,
+                cart
+            );
+
+
+            updateNavigation();
+
+
+            showMessage(
+                "Added to cart ✓"
+            );
+
+        }
+
+
+        /* =========================================================
+           ADD TO WISHLIST
+           ========================================================= */
+
+        function addToWishlist() {
+
+            if (!product) {
+
+                return;
+
+            }
+
+
+            const wishlist =
+                readStorage(WISHLIST_KEY);
+
+
+            const existing =
+                wishlist.find(
+                    item =>
+                        String(item.id) ===
+                        String(product.id)
+                );
+
+
+            if (existing) {
+
+                showMessage(
+                    "Already in your wishlist ♥"
+                );
+
+                return;
+
+            }
+
+
+            wishlist.push({
+
+                id: product.id,
+
+                name: product.name,
+
+                category: product.category,
+
+                price: Number(product.price),
+
+                image: product.image
+
+            });
+
+
+            writeStorage(
+                WISHLIST_KEY,
+                wishlist
+            );
+
+
+            updateNavigation();
+
+
+            showMessage(
+                "Added to wishlist ♥"
+            );
+
+        }
+
+
+        /* =========================================================
+           MESSAGE
+           ========================================================= */
+
+        function showMessage(message) {
+
+            const element =
+                document.getElementById(
+                    "productMessage"
+                );
+
+
+            if (!element) {
+
+                return;
+
+            }
+
+
+            element.textContent =
+                message;
+
+
+            setTimeout(
+                () => {
+
+                    element.textContent =
+                        "";
+
+                },
+                2500
+            );
+
+        }
+
+
+        /* =========================================================
+           INITIALIZE
+           ========================================================= */
+
+        updateNavigation();
+
+        renderProduct();
+
+    </script>
+
+</body>
+
+</html>

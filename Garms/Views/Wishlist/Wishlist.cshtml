@@ -1,0 +1,30 @@
+@{
+    ViewData["Title"] = "Your Wishlist";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>@ViewData["Title"] | GARMS</title>
+  <link rel="stylesheet" href="~/css/shop.css">
+</head>
+<body>
+  <div class="announcement">NEW DROP ON FRIDAY — FIND YOUR NEXT PIECE</div>
+  <nav class="shop-nav" aria-label="Main navigation">
+    <a class="logo" href="/">GARMS</a>
+    <div class="nav-links">
+      <a href="/Wishlist/Wishlist">♡ <span id="wishlistCount">0</span></a>
+      <a href="/Cart/Cart">CART (<span id="cartCount">0</span>)</a>
+    </div>
+  </nav>
+  <main class="shop-page">
+    <p class="eyebrow">GARMS / SAVED PIECES</p>
+    <h1>Your wishlist.</h1>
+    <div id="wishlistItems" class="shop-list"></div>
+  </main>
+  <script src="~/js/shop.js"></script>
+</body>
+</html>

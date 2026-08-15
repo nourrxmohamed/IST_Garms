@@ -1,0 +1,189 @@
+@using System.Text.Json
+@using System.Linq
+@model IEnumerable<Garms.Models.Products>
+
+@{
+    ViewData["Title"] = "Shop Category";
+    Layout = null;
+
+    var productsForJavaScript = Model.Select(p => new
+    {
+        id = p.ProductID.ToString(),
+        name = p.ProductName,
+        category = p.Category?.Trim().ToLower(),
+        price = p.Price,
+
+        image = !string.IsNullOrWhiteSpace(p.ImagePath)
+            ? "/" + p.ImagePath.TrimStart('/')
+            : (!string.IsNullOrWhiteSpace(p.Image)
+                ? "/" + p.Image.TrimStart('/')
+                : "/images/image.jpg")
+    }).ToList();
+
+    var productJson =
+        JsonSerializer.Serialize(productsForJavaScript);
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Shop Category | GARMS</title>
+
+    <link rel="stylesheet"
+          href="~/css/shop.css">
+
+</head>
+
+<body>
+
+    <!-- ANNOUNCEMENT -->
+
+    <div class="announcement">
+        NEW DROP ON FRIDAY — FIND YOUR NEXT PIECE
+    </div>
+
+
+    <!-- NAVIGATION -->
+
+    <nav class="shop-nav"
+         aria-label="Main navigation">
+
+        <a class="logo"
+           href="/">
+            GARMS
+        </a>
+
+        <div class="nav-links">
+
+            <a href="/Wishlist/Wishlist">
+
+                Wishlist
+                (<span id="wishlistCount">0</span>)
+
+            </a>
+
+            <a href="/Cart/Cart">
+
+                CART
+                (<span id="cartCount">0</span>)
+
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- CATEGORY PAGE -->
+
+    <main class="shop-page">
+
+        <a class="eyebrow"
+           href="/#drop">
+
+            ← BACK TO SHOP
+
+        </a>
+
+
+        <h1 id="categoryTitle">
+            Shop.
+        </h1>
+
+
+        <div id="productGrid"
+             class="catalogue-grid">
+        </div>
+
+    </main>
+
+
+    <!-- DATABASE PRODUCTS -->
+
+    <script id="garmsProductData"
+            type="application/json">
+
+        @Html.Raw(productJson)
+
+    </script>
+
+
+    <!-- LOAD DATABASE PRODUCTS INTO JAVASCRIPT -->
+
+    <script>
+
+        (function () {
+
+            const productData =
+                document.getElementById(
+                    "garmsProductData"
+                );
+
+            if (!productData) {
+
+                console.error(
+                    "GARMS: Product data element not found."
+                );
+
+                window.garmsProducts = [];
+
+                return;
+            }
+
+
+            try {
+
+                const data =
+                    JSON.parse(
+                        productData.textContent
+                    );
+
+                window.garmsProducts =
+                    Array.isArray(data)
+                        ? data
+                        : [];
+
+
+                console.log(
+                    "GARMS category products loaded:",
+                    window.garmsProducts
+                );
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "GARMS: Could not load database products.",
+                    error
+                );
+
+                window.garmsProducts = [];
+
+            }
+
+        })();
+
+    </script>
+
+
+    <!-- SHOP JAVASCRIPT -->
+
+    <script src="~/js/shop.js"></script>
+
+
+    <!-- CATEGORY JAVASCRIPT -->
+
+    <script src="~/js/category.js"></script>
+
+</body>
+
+</html>

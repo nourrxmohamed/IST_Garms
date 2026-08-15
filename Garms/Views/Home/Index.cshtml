@@ -1,0 +1,340 @@
+@{
+    ViewData["Title"] = "Home";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>@ViewData["Title"] | GARMS</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="~/css/style.css">
+</head>
+
+<body>
+  <div class="announcement">
+    NEW DROP ON FRIDAY — FIND YOUR NEXT PIECE
+  </div>
+
+  <nav class="navbar fixed-top" aria-label="Main navigation">
+    <a href="/" class="logo">GARMS</a>
+
+    <label for="search" class="visually-hidden">Search products</label>
+    <input id="search" type="search" placeholder="Search...">
+
+    <div class="icons">
+      <a href="/Wishlist/Wishlist" id="wishlistIcon" aria-label="Wishlist">
+        ♡ <span id="wishlistCount">0</span>
+      </a>
+
+      <a href="/Cart/Cart" id="cartIcon">
+        CART (<span id="cartCount">0</span>)
+      </a>
+    </div>
+  </nav>
+
+  <aside class="sidebar">
+    <div class="menu" aria-label="Menu">☰</div>
+
+    <small>SHOP</small>
+
+    <a href="/">Home</a>
+    <a href="/#drop">New Drop</a>
+    <a href="/#tops">Tops</a>
+    <a href="/#jeans">Jeans</a>
+    <a href="/#jackets">Jackets</a>
+    <a href="/#accessories">Accessories</a>
+    <a href="/#shoes">Shoes</a>
+    <a href="/#bags">Bags</a>
+
+    <hr>
+
+    <a href="/#build" class="build-link">Build Your Fit!</a>
+  </aside>
+
+  <main>
+    <section id="home" class="hero">
+      <div class="hero-content">
+        <small>GARMS / THRIFTED STREETWEAR</small>
+
+        <h1>
+          KEEP<br>
+          FASHION<br>
+          WEIRD.
+        </h1>
+
+        <p>Forget The Rules If You Like It Wear It.</p>
+
+        <a href="/#drop" class="button">SHOP THE DROP</a>
+      </div>
+    </section>
+
+    <section id="drop" class="section">
+      <div class="section-title">
+        <div>
+          <h2>New Drop</h2>
+        </div>
+
+        <a href="/Category/Category?category=all">see more →</a>
+      </div>
+
+      <div id="homeProductGrid" class="row g-4">
+        <div class="col-12 col-sm-6 col-lg-3">
+          <div
+            class="product"
+            data-id="1"
+            data-name="Black Lace Cap-Sleeve Top"
+            data-price="650"
+            data-image="images/top (4).jpg"
+            data-category="tops"
+          >
+            <img src="~/images/top (4).jpg" alt="Black Lace Cap-Sleeve Top">
+            <h5>Black Lace Cap-Sleeve Top</h5>
+            <p>EGP 650</p>
+
+            <button type="button" class="addCart">Add to Cart</button>
+            <button type="button" class="addWishlist">♡ Wishlist</button>
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-lg-3">
+          <div
+            class="product"
+            data-id="4"
+            data-name="Lace-Trim Denim Mini Skirt"
+            data-price="1000"
+            data-image="images/skirt.jpg"
+            data-category="jeans"
+          >
+            <img src="~/images/skirt.jpg" alt="Lace-Trim Denim Mini Skirt">
+            <h5>Lace-Trim Denim Mini Skirt</h5>
+            <p>EGP 1,000</p>
+
+            <button type="button" class="addCart">Add to Cart</button>
+            <button type="button" class="addWishlist">♡ Wishlist</button>
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-lg-3">
+          <div
+            class="product"
+            data-id="5"
+            data-name="Turquoise Beaded Clutch"
+            data-price="1500"
+            data-image="images/bag(6).jpg"
+            data-category="bags"
+          >
+            <img src="~/images/bag(6).jpg" alt="Turquoise Beaded Clutch">
+            <h5>Turquoise Beaded Clutch</h5>
+            <p>EGP 1,500</p>
+
+            <button type="button" class="addCart">Add to Cart</button>
+            <button type="button" class="addWishlist">♡ Wishlist</button>
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="product"
+                         data-id="27"
+                         data-name="Olive Lace-Up High Heel Boots"
+                         data-price="2000"
+                         data-image="images/shoes (6).jpg"
+                         data-category="shoes">
+
+                        <img src="~/images/shoes (6).jpg"
+                             alt="Olive Lace-Up High Heel Boots">
+
+                        <h5>Olive Lace-Up High Heel Boots</h5>
+
+                        <p>EGP 2,000</p>
+
+                        <button type="button" class="addCart">Add to Cart</button>
+                        <button type="button" class="addWishlist">♡ Wishlist</button>
+                    </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section categories">
+      <small>SHOP BY CATEGORY</small>
+      <h2>Find your style.</h2>
+
+      <div class="row g-4">
+        <div class="col-12 col-md-6 col-lg-4" id="tops">
+          <div class="category">
+            <img src="~/images/top (3).jpg" alt="Tops category">
+            <h3>TOPS</h3>
+            <a href="/#drop">SHOP NOW →</a>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-4" id="jeans">
+          <div class="category">
+            <img
+              src="~/images/streetwear mini skirt_ cool denim mini skirt.jpg"
+              alt="Jeans category"
+            >
+            <h3>JEANS</h3>
+            <a href="/#drop">SHOP NOW →</a>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-4" id="jackets">
+          <div class="category">
+            <img src="~/images/jacket.jpg" alt="Jackets category">
+            <h3>JACKETS</h3>
+            <a href="/#drop">SHOP NOW →</a>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-4" id="accessories">
+          <div class="category">
+            <img src="~/images/bracelete.jpg" alt="Accessories category">
+            <h3>ACCESSORIES</h3>
+            <a href="/#drop">SHOP NOW →</a>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-4" id="shoes">
+          <div class="category">
+            <img src="~/images/shoes (10).jpg" alt="Shoes category">
+            <h3>SHOES</h3>
+            <a href="/#drop">SHOP NOW →</a>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-4" id="bags">
+          <div class="category">
+            <img src="~/images/bag (8).jpg" alt="Bags category">
+            <h3>BAGS</h3>
+            <a href="/#drop">SHOP NOW →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="story">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6">
+          <img src="~/images/garmslogo.png" alt="GARMS logo">
+        </div>
+
+        <div class="col-lg-6">
+          <small>THE GARMS STORY</small>
+
+          <h2>Every piece carries a story.</h2>
+
+          <p>
+            We believe the best pieces are the ones that don't look like
+            everything else.
+            <br><br>
+            GARMS carefully curates thrifted and vintage streetwear for people
+            who want to dress different, feel confident and wear their own story.
+          </p>
+
+          <a href="/#build">DISCOVER YOUR STYLE →</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="build" class="build">
+      <div class="build-heading">
+        <small>YOUR STYLE / YOUR RULES</small>
+        <h2>BUILD YOUR OUTFIT.</h2>
+        <p>Mix. Match. Make it yours.</p>
+      </div>
+
+      <div class="fit">
+        <div class="preview">
+          <div class="outfit">
+            <div class="top-piece">TOP</div>
+            <div class="jacket-piece">JACKET</div>
+            <div class="pants-piece">JEANS</div>
+            <div class="shoes-piece">SHOES</div>
+            <div class="accessory-piece">ACCESSORIES</div>
+            <div class="bag-piece">BAG</div>
+          </div>
+
+          <h3>YOUR FIT</h3>
+          <p>Choose your pieces and create your style.</p>
+        </div>
+
+        <div class="fit-details">
+          <h4>BUILD YOUR FIT</h4>
+          <p>Start with a piece. Add your style.</p>
+
+          <div class="options">
+            <span>TOPS →</span>
+            <span>JEANS →</span>
+            <span>JACKETS →</span>
+            <span>ACCESSORIES →</span>
+            <span>SHOES →</span>
+            <span>BAGS →</span>
+          </div>
+
+          <button type="button">START BUILDING</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="community">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6">
+          <h2>Find your people.</h2>
+
+          <p>
+            GARMS is more than clothes. It's a community of people who dress
+            different and don't follow the rulebook.
+          </p>
+
+          <a href="/">JOIN THE COMMUNITY →</a>
+        </div>
+
+        <div class="col-lg-6">
+          <img src="~/images/homies.jpg" alt="GARMS community">
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="row g-5">
+        <div class="col-lg-5">
+          <h2>GARMS</h2>
+          <p>Thrifted pieces. Your style.</p>
+        </div>
+
+        <div class="col-6 col-lg-2">
+          <h6>SHOP</h6>
+          <a href="/#tops">Tops</a>
+          <a href="/#jeans">Jeans</a>
+          <a href="/#jackets">Jackets</a>
+          <a href="/#shoes">Shoes</a>
+        </div>
+
+        <div class="col-6 col-lg-2">
+          <h6>GARMS</h6>
+          <a href="/">Home</a>
+          <a href="/#build">Build Your Fit</a>
+          <a href="/">About Us</a>
+        </div>
+
+        <div class="col-12 col-lg-3">
+          <h6>FOLLOW US</h6>
+          <a href="/">Instagram</a>
+          <a href="/">TikTok</a>
+          <a href="/">Contact</a>
+        </div>
+      </div>
+
+      <hr>
+
+      <small>© 2026 GARMS. All rights reserved.</small>
+    </footer>
+  </main>
+  <script src="~/js/script.js"></script>
+  <script src="~/js/products.js"></script>
+</body>
+</html>
